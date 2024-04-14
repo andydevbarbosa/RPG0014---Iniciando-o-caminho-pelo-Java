@@ -1,6 +1,9 @@
 package cadastropoo;
 import java.io.*;
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 class Pessoa implements Serializable {
     private int id;
@@ -191,32 +194,85 @@ class PessoaJuridicaRepo {
 
 public class CadastroPOO {
     public static void main(String[] args) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        PessoaFisicaRepo repoPessoaFisica = new PessoaFisicaRepo();
+        PessoaJuridicaRepo repoPessoaJuridica = new PessoaJuridicaRepo();
+
         try {
-            PessoaFisicaRepo repo1 = new PessoaFisicaRepo();
-            repo1.inserir(new PessoaFisica(1, "Joao", "123.456.789-00", 30));
-            repo1.inserir(new PessoaFisica(2, "Maria", "987.654.321-00", 25));
-            repo1.persistir("pessoas_fisicas.txt");
+            int opcao;
+            do {
+                System.out.println("Selecione uma opção:");
+                System.out.println("1 - Incluir");
+                System.out.println("2 - Alterar");
+                System.out.println("3 - Excluir");
+                System.out.println("4 - Exibir pelo ID");
+                System.out.println("5 - Exibir todos");
+                System.out.println("6 - Salvar dados");
+                System.out.println("7 - Recuperar dados");
+                System.out.println("0 - Finalizar a execução");
+                System.out.print("Opção: ");
+                opcao = Integer.parseInt(reader.readLine());
 
-            PessoaFisicaRepo repo2 = new PessoaFisicaRepo();
-            repo2.recuperar("pessoas_fisicas.txt");
-            System.out.println("Pessoas Fisicas:");
-            for (PessoaFisica pessoa : repo2.obterTodos()) {
-                pessoa.exibir();
-            }
-
-            PessoaJuridicaRepo repo3 = new PessoaJuridicaRepo();
-            repo3.inserir(new PessoaJuridica(1, "Joao S.A.", "12.345.678/0001-50"));
-            repo3.inserir(new PessoaJuridica(2, "Maria S.A.", "97.654.321/0001-95"));
-            repo3.persistir("pessoas_juridicas.txt");
-
-            PessoaJuridicaRepo repo4 = new PessoaJuridicaRepo();
-            repo4.recuperar("pessoas_juridicas.txt");
-            System.out.println("\nPessoas Juridicas:");
-            for (PessoaJuridica pessoa : repo4.obterTodos()) {
-                pessoa.exibir();
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+                switch (opcao) {
+                    case 1:
+                        System.out.println("Escolha o tipo (1 - Pessoa Física, 2 - Pessoa Jurídica): ");
+                        int tipo = Integer.parseInt(reader.readLine());
+                        if (tipo == 1) {
+                            // Incluir Pessoa Física
+                            System.out.println("Digite o ID:");
+                            int id = Integer.parseInt(reader.readLine());
+                            System.out.println("Digite o nome:");
+                            String nome = reader.readLine();
+                            System.out.println("Digite o CPF:");
+                            String cpf = reader.readLine();
+                            System.out.println("Digite a idade:");
+                            int idade = Integer.parseInt(reader.readLine());
+                            PessoaFisica pessoaFisica = new PessoaFisica(id, nome, cpf, idade);
+                            repoPessoaFisica.inserir(pessoaFisica);
+                            System.out.println("Pessoa Física incluída com sucesso.");
+                        } else if (tipo == 2) {
+                            // Incluir Pessoa Jurídica
+                            System.out.println("Digite o ID:");
+                            int id = Integer.parseInt(reader.readLine());
+                            System.out.println("Digite o nome:");
+                            String nome = reader.readLine();
+                            System.out.println("Digite o CNPJ:");
+                            String cnpj = reader.readLine();
+                            PessoaJuridica pessoaJuridica = new PessoaJuridica(id, nome, cnpj);
+                            repoPessoaJuridica.inserir(pessoaJuridica);
+                            System.out.println("Pessoa Jurídica incluída com sucesso.");
+                        } else {
+                            System.out.println("Opção inválida.");
+                        }
+                        break;
+                    case 2:
+                        // Implementar a opção Alterar
+                        break;
+                    case 3:
+                        // Implementar a opção Excluir
+                        break;
+                    case 4:
+                        // Implementar a opção Exibir pelo ID
+                        break;
+                    case 5:
+                        // Implementar a opção Exibir todos
+                        break;
+                    case 6:
+                        // Implementar a opção Salvar dados
+                        break;
+                    case 7:
+                        // Implementar a opção Recuperar dados
+                        break;
+                    case 0:
+                        System.out.println("Finalizando a execução.");
+                        break;
+                    default:
+                        System.out.println("Opção inválida.");
+                }
+            } while (opcao != 0);
+        } catch (IOException e) {
+            System.err.println("Erro de entrada/saída: " + e.getMessage());
         }
     }
 }
